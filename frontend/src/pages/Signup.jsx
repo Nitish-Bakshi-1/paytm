@@ -18,35 +18,35 @@ const Signup = () => {
         <Heading label="Signup" />
         <Subheading label="signup with your email" />
         <InputBox
-          onchange={(e) => {
+          onChange={(e) => {
             setEmail(e.target.value);
           }}
           label="email"
           placeholder={"email"}
         />
         <InputBox
-          onchange={(e) => {
+          onChange={(e) => {
             setFirstname(e.target.value);
           }}
           label="firstname"
           placeholder={"firstname"}
         />
         <InputBox
-          onchange={(e) => {
+          onChange={(e) => {
             setLastname(e.target.value);
           }}
           label="lastname"
           placeholder={"lastname"}
         />
         <InputBox
-          onchange={(e) => {
+          onChange={(e) => {
             setPassword(e.target.value);
           }}
           label="password"
           placeholder={"password"}
         />
         <Button
-          onclick={() => {
+          onClick={() => {
             axios.post("http://localhost:3000/api/v1/user/signup", {
               username: email,
               firstName: firstname,

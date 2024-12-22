@@ -38,25 +38,31 @@ router.post("/signup", async function (req, res) {
       message: "user with same username already exsits",
     });
   }
-  const createdUser = await User.create({
-    username,
-    firstName,
-    lastName,
-    password,
-  });
+  try {
+    const createdUser = await User.create({
+      username,
+      firstName,
+      lastName,
+      password,
+    });
 
-  const acc = await Account.create({
-    userId: createdUser._id,
-    balance: 1 * Math.random() * 10000,
-  });
+    const acc = await Account.create({
+      userId: createdUser._id,
+      balance: 1 * Math.random() * 10000,
+    });
 
-  const token = jwt.sign({ userId: createdUser._id }, JWT_SECRET);
+    const token = jwt.sign({ userId: createdUser._id }, JWT_SECRET);
 
-  res.json({
-    token,
-    msg: "user created successfully",
-    acc,
-  });
+    res.json({
+      token,
+      msg: "user created successfully",
+      acc,
+    });
+  } catch (e) {
+    res.json({
+      error: e,
+    });
+  }
 });
 
 router.post("/signin", async function (req, res) {
@@ -69,16 +75,16 @@ router.post("/signin", async function (req, res) {
     });
   }
 
-  const user = await User.findOne({ username, password });
+  const user = await User.findOne({ username: username, password: password });
 
   if (!user) {
     res.json({
-      msg: "user not found signup first",
+      msg: "user not found signup first (signin failed)",
     });
   }
-  const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+  const signinToken = jwt.sign({ userId: user._id }, JWT_SECRET);
   res.json({
-    token,
+    token: signinToken,
     msg: "signin successful",
   });
 });
